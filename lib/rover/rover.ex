@@ -57,6 +57,8 @@ defmodule Rover do
 
         true ->
           IO.puts("Rover moved to #{position_to_string(new_position)}")
+
+          print_map({grid_size, grid_size}, new_position, obstacles)
           new_position
       end
 
@@ -68,4 +70,18 @@ defmodule Rover do
   end
 
   defp position_to_string({x, y}), do: "{#{x}, #{y}}"
+
+  defp print_map({grid_width, grid_height}, {rover_x, rover_y}, obstacles) do
+    for y <- 0..grid_height do
+      for x <- 0..grid_width do
+        cond do
+          Rover.Obstacles.is_obstacle({x, y}, obstacles) -> IO.write("x")
+          x == rover_x && y == rover_y -> IO.write("@")
+          true -> IO.write("_")
+        end
+      end
+
+      IO.write("\n")
+    end
+  end
 end
